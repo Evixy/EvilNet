@@ -11,4 +11,6 @@ object implements the Serializable-interface.
 
 EvilNet can make use of all network traffic protocols, including multicast sockets. 
 
-Check the file EvilNet.java to get an idea of how to make use of the engine.
+Download this engine as a zip and put it into your project. Depending on where you put the files you may have 
+to chanage the package-names for EvilNet. After that, check the file EvilNet.java to get an idea of how to 
+make use of the engine in your project.
