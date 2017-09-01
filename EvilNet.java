@@ -55,24 +55,33 @@ public class EvilNet
 	 *
 	 * @param <T>           The generic type representing the message. This can be anything as long as it implements the
 	 *                      Serializable-interface.
-	 *
-	 * @throws IOException  Throws an IOException if one is encountered.
 	 */
 	public static <T> void
 	SendTCP(DataOutputStream outputStream, ArrayList<T> messages)
-			throws IOException
 	{
-		Sender.sendTCP(outputStream, messages);
+		try
+		{
+			Sender.sendTCP(outputStream, messages);
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 	/**
 	 * Overloaded function of the above to allow a user to send a single message without creating a container for it.
 	 */
 	public static <T> void
 	SendTCP(DataOutputStream outputStream, T message)
-			throws IOException
 	{
-
-		Sender.sendTCP(outputStream, message);
+		try
+		{
+			Sender.sendTCP(outputStream, message);
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -86,14 +95,19 @@ public class EvilNet
 	 *                      Serializable-interface.
 	 *
 	 * @return              Returns de-serialized messages in an ArrayList of type 'T'.
-	 *
-	 * @throws IOException  Throws an IOException if one is encountered.
 	 */
 	public static <T> ArrayList<T>
 	ReceiveTCP(DataInputStream inputStream, int MAX_BUF_SIZE)
-			throws IOException
 	{
-		return Receiver.receiveTCP(inputStream, MAX_BUF_SIZE);
+		try
+		{
+			return Receiver.receiveTCP(inputStream, MAX_BUF_SIZE);
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 
@@ -116,24 +130,33 @@ public class EvilNet
 	 *
 	 * @param <T>           The generic type representing the message. This can be anything as long as it implements the
 	 *                      Serializable-interface.
-	 *
-	 * @throws IOException  Throws an IOException if one is encountered.
 	 */
 	public static <T> void
 	SendUDP(DatagramSocket socket, ArrayList<T> messages, InetAddress IP, int PORT)
-			throws IOException
 	{
-		Sender.sendDatagram(socket, messages, IP, PORT);
+		try
+		{
+			Sender.sendDatagram(socket, messages, IP, PORT);
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 	/**
 	 * Overloaded function of the above to allow a user to send a single message without creating a container for it.
 	 */
 	public static <T> void
 	SendUDP(DatagramSocket socket, T message, InetAddress IP, int PORT)
-			throws IOException
 	{
-
-		Sender.sendDatagram(socket, message, IP, PORT);
+		try
+		{
+			Sender.sendDatagram(socket, message, IP, PORT);
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -147,14 +170,19 @@ public class EvilNet
 	 *                      Serializable-interface.
 	 *
 	 * @return              Returns de-serialized messages in an ArrayList of type 'T'.
-	 *
-	 * @throws IOException  Throws an IOException if one is encountered.
 	 */
 	public static <T> ArrayList<T>
 	ReceiveUDP(DatagramSocket socket, int MAX_BUF_SIZE)
-			throws IOException
 	{
-		return Receiver.receiveUDP(socket, MAX_BUF_SIZE);
+		try
+		{
+			return Receiver.receiveUDP(socket, MAX_BUF_SIZE);
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 
@@ -177,22 +205,33 @@ public class EvilNet
 	 *
 	 * @param <T>           The generic type representing the message. This can be anything as long as it implements the
 	 *                      Serializable-interface.
-	 * @throws IOException  Throws an IOException if one is encountered.
 	 */
 	public static <T> void
 	SendMulticast(MulticastSocket socket, ArrayList<T> messages, InetAddress IP, int PORT)
-			throws IOException
 	{
-		Sender.sendMulticast(socket, messages, IP, PORT);
+		try
+		{
+			Sender.sendMulticast(socket, messages, IP, PORT);
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 	/**
 	 * Overloaded function of the above to allow a user to send a single message without creating a container for it.
 	 */
 	public static <T> void
 	SendMulticast(MulticastSocket socket, T message, InetAddress IP, int PORT)
-			throws IOException
 	{
-		Sender.sendMulticast(socket, message, IP, PORT);
+		try
+		{
+			Sender.sendMulticast(socket, message, IP, PORT);
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -206,14 +245,19 @@ public class EvilNet
 	 *                      Serializable-interface.
 	 *
 	 * @return              Returns deserialized messages in an ArrayList of type 'T'.
-	 *
-	 * @throws IOException  Throws an IOException if one is encountered.
 	 */
 	public static <T> ArrayList<T>
 	ReceiveMulti(MulticastSocket socket, int MAX_BUF_SIZE)
-			throws IOException
 	{
-		return Receiver.receiveMulticast(socket, MAX_BUF_SIZE);
+		try
+		{
+			return Receiver.receiveMulticast(socket, MAX_BUF_SIZE);
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 }
