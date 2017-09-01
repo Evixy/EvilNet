@@ -8,7 +8,6 @@ public abstract class SendQueue implements Runnable
 {
 	private int tickRate;
 	private long timeBetweenTicks;
-	ArrayList<Messages.IPMessage> messageQueue;
 
 	private long previous;
 	private long now;
@@ -66,8 +65,14 @@ public abstract class SendQueue implements Runnable
 			}
 		}
 	}
+	public void AddToQueue(Messages.IPMessage msg)
+	{
+		ArrayList<Messages.IPMessage> m = new ArrayList<>();
+		m.add(msg);
+		this.AddToQueue(m);
+	}
 
 	public abstract void AddToQueue(ArrayList<Messages.IPMessage> msg);
-	public abstract void AddToQueue(Messages.IPMessage msg);
+
 	public abstract void SendMessages() throws IOException;
 }

@@ -50,21 +50,22 @@ class Sender
 
 		Messages.UDPMessage msg = new Messages.UDPMessage<>(socket, objects, address, port);
 		udpQueue.AddToQueue(msg);
-		byte[] b = Serializer.Serialize(objects);
-		DatagramPacket dp = new DatagramPacket(b, b.length, address, port);
-		socket.send(dp);
 	}
 
 	/**
-	 * Overloaded function of the above in order to send just 1 object.
+	 * Overloaded function of the above to add one message to the queue.
 	 */
 	static <T> void
 	sendDatagram(DatagramSocket socket, T object, InetAddress address, int port)
 			throws IOException
 	{
-		byte[] b = Serializer.Serialize(object);
-		DatagramPacket dp = new DatagramPacket(b, b.length, address, port);
-		socket.send(dp);
+		if(udpQueue == null)
+		{
+			udpQueue = new UDPQueue(EvilNet.tickRate);
+		}
+
+		Messages.UDPMessage msg = new Messages.UDPMessage<>(socket, object, address, port);
+		udpQueue.AddToQueue(msg);
 	}
 
 	//:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::://
@@ -91,20 +92,26 @@ class Sender
 	sendMulticast(MulticastSocket socket, ArrayList<T> objects, InetAddress group, int port)
 			throws IOException
 	{
-		byte[] b = Serializer.Serialize(objects);
-		DatagramPacket dp = new DatagramPacket(b, b.length, group, port);
-		socket.send(dp);
+		if(multiQueue == null)
+		{
+			multiQueue = new MulticastQueue(EvilNet.tickRate);
+		}
+		Messages.MultiMessage msg = new Messages.MultiMessage<>(socket, objects, group, port);
+		multiQueue.AddToQueue(msg);
 	}
 	/**
-	 *
+	 * Overloaded function of the above to add one message to the queue.
 	 */
 	static <T> void
 	sendMulticast(MulticastSocket socket, T object, InetAddress group, int port)
 			throws IOException
 	{
-		byte[] b = Serializer.Serialize(object);
-		DatagramPacket dp = new DatagramPacket(b, b.length, group, port);
-		socket.send(dp);
+		if(multiQueue == null)
+		{
+			multiQueue = new MulticastQueue(EvilNet.tickRate);
+		}
+		Messages.MultiMessage msg = new Messages.MultiMessage<>(socket, object, group, port);
+		multiQueue.AddToQueue(msg);
 	}
 
 	//:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::://
@@ -127,20 +134,25 @@ class Sender
 	sendTCP(DataOutputStream stream, ArrayList<T> objects)
 			throws IOException
 	{
-		byte[] b = Serializer.Serialize(objects);
-		stream.write(b);
-		stream.flush();
+		if(tcpQueue == null)
+		{
+			tcpQueue = new TCPQueue(EvilNet.tickRate);
+		}
+		Messages.TCPMessage msg = new Messages.TCPMessage<>(stream, objects);
+		tcpQueue.AddToQueue(msg);
 	}
 	/**
-	 *
+	 *  Overloaded function of the above to add one message to the queue.
 	 */
 	static <T> void
 	sendTCP(DataOutputStream stream, T object)
 			throws IOException
 	{
-
-		byte[] b = Serializer.Serialize(object);
-		stream.write(b);
-		stream.flush();
+		if(tcpQueue == null)
+		{
+			tcpQueue = new TCPQueue(EvilNet.tickRate);
+		}
+		Messages.TCPMessage msg = new Messages.TCPMessage<>(stream, object);
+		tcpQueue.AddToQueue(msg);
 	}
 }

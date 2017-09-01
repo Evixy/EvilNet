@@ -34,11 +34,9 @@ public class TCPQueue <T> extends SendQueue
 			}
 			else
 			{
-
+				this.messages.put(m.outputStream, m);
 			}
-
 		}
-
 	}
 
 	@Override
