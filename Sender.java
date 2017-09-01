@@ -1,5 +1,10 @@
 package EvilNet;
 
+import EvilNet.Queues.Messages;
+import EvilNet.Queues.MulticastQueue;
+import EvilNet.Queues.TCPQueue;
+import EvilNet.Queues.UDPQueue;
+
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -8,11 +13,8 @@ import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.util.ArrayList;
 
-
-
 class Sender
 {
-
 	private static TCPQueue tcpQueue = null;
 	private static UDPQueue udpQueue = null;
 	private static MulticastQueue multiQueue = null;
@@ -46,7 +48,7 @@ class Sender
 			udpQueue = new UDPQueue(EvilNet.tickRate);
 		}
 
-		UDPMessage msg = new UDPMessage<>(socket, objects, address, port);
+		Messages.UDPMessage msg = new Messages.UDPMessage<>(socket, objects, address, port);
 		udpQueue.AddToQueue(msg);
 		byte[] b = Serializer.Serialize(objects);
 		DatagramPacket dp = new DatagramPacket(b, b.length, address, port);

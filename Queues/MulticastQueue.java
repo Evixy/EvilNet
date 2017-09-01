@@ -5,7 +5,7 @@ package EvilNet.Queues;
 import java.io.IOException;
 import java.util.ArrayList;
 
-class MulticastQueue <T> extends SendQueue implements Runnable
+public class MulticastQueue <T> extends SendQueue implements Runnable
 {
 	public MulticastQueue(int tickRate)
 	{

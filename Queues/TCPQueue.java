@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
-class TCPQueue <T> extends SendQueue
+public class TCPQueue <T> extends SendQueue
 {
 	Map<DataOutputStream, Messages.TCPMessage> messages;
 

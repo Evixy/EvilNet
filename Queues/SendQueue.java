@@ -4,7 +4,7 @@ package EvilNet.Queues;
 import java.io.IOException;
 import java.util.ArrayList;
 
-abstract class SendQueue implements Runnable
+public abstract class SendQueue implements Runnable
 {
 	private int tickRate;
 	private long timeBetweenTicks;

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class Messages
 {
-	static class IPMessage <T>
+	public static class IPMessage <T>
 	{
 		ArrayList<T> msg;
 
@@ -23,7 +23,7 @@ public class Messages
 		}
 	}
 
-	static class TCPMessage <T> extends IPMessage
+	public static class TCPMessage <T> extends IPMessage
 	{
 		public DataOutputStream outputStream;
 		public TCPMessage(DataOutputStream outputStream, T msg)
@@ -33,7 +33,7 @@ public class Messages
 		}
 	}
 
-	static class UDPMessage <T> extends IPMessage
+	public static class UDPMessage <T> extends IPMessage
 	{
 		public DatagramSocket socket;
 		public InetAddress IP;
@@ -56,7 +56,7 @@ public class Messages
 		}
 	}
 
-	static class MultiMessage <T> extends IPMessage
+	public static class MultiMessage <T> extends IPMessage
 	{
 		public MulticastSocket socket;
 		public InetAddress GROUP;

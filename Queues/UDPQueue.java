@@ -4,7 +4,7 @@ package EvilNet.Queues;
 import java.io.IOException;
 import java.util.ArrayList;
 
-class UDPQueue <T> extends SendQueue
+public class UDPQueue <T> extends SendQueue
 {
 	public UDPQueue(int tickRate)
 	{
