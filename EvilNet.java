@@ -41,6 +41,24 @@ import java.util.ArrayList;
 
 public class EvilNet
 {
+	public static int tickRate;
+	private static boolean evilNetInitialized = false;
+	private static String alreadyInit = "EvilNet has already been initialized.";
+	private static String notAlreadyInit = "EvilNet has not been initialized yet. Call InitializeEvilNet before you try to use the functions.";
+	public static void InitializeEvilNet(int tick)
+	{
+		e_assert(!evilNetInitialized, "EvilNet has already been initialized.");
+		evilNetInitialized = true;
+		tickRate = tick;
+	}
+
+	static void e_assert(boolean val, String str)
+	{
+		if(!val)
+		{
+			throw new AssertionError(str);
+		}
+	}
 	//:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::://
 	/*----------------------------------------------------- TCP ------------------------------------------------------*/
 	//:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::://
@@ -59,6 +77,7 @@ public class EvilNet
 	public static <T> void
 	SendTCP(DataOutputStream outputStream, ArrayList<T> messages)
 	{
+		e_assert(evilNetInitialized, notAlreadyInit);
 		try
 		{
 			Sender.sendTCP(outputStream, messages);
@@ -74,6 +93,7 @@ public class EvilNet
 	public static <T> void
 	SendTCP(DataOutputStream outputStream, T message)
 	{
+		e_assert(evilNetInitialized, notAlreadyInit);
 		try
 		{
 			Sender.sendTCP(outputStream, message);
@@ -94,12 +114,12 @@ public class EvilNet
 	 * @param <T>           The generic type representing the message. This can be anything as long as it implements the
 	 *                      Serializable-interface.
 	 *
-	 * @return              Returns de-serialized messages in an ArrayList of type 'T'. If an excetion is triggered, the
-	 *                      function returns null. You can use this fact to break your listener loop.
+	 * @return              Returns de-serialized messages in an ArrayList of type 'T'.
 	 */
 	public static <T> ArrayList<T>
 	ReceiveTCP(DataInputStream inputStream, int MAX_BUF_SIZE)
 	{
+		e_assert(evilNetInitialized, notAlreadyInit);
 		try
 		{
 			return Receiver.receiveTCP(inputStream, MAX_BUF_SIZE);
@@ -110,7 +130,6 @@ public class EvilNet
 			return null;
 		}
 	}
-
 
 	//:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::://
 	/*----------------------------------------------------- UDP ------------------------------------------------------*/
@@ -135,6 +154,7 @@ public class EvilNet
 	public static <T> void
 	SendUDP(DatagramSocket socket, ArrayList<T> messages, InetAddress IP, int PORT)
 	{
+		e_assert(evilNetInitialized, notAlreadyInit);
 		try
 		{
 			Sender.sendDatagram(socket, messages, IP, PORT);
@@ -150,6 +170,7 @@ public class EvilNet
 	public static <T> void
 	SendUDP(DatagramSocket socket, T message, InetAddress IP, int PORT)
 	{
+		e_assert(evilNetInitialized, notAlreadyInit);
 		try
 		{
 			Sender.sendDatagram(socket, message, IP, PORT);
@@ -170,12 +191,12 @@ public class EvilNet
 	 * @param <T>           The generic type representing the message. This can be anything as long as it implements the
 	 *                      Serializable-interface.
 	 *
-	 * @return              Returns de-serialized messages in an ArrayList of type 'T'. If an excetion is triggered, the
-	 *                      function returns null. You can use this fact to break your listener loop.
+	 * @return              Returns de-serialized messages in an ArrayList of type 'T'.
 	 */
 	public static <T> ArrayList<T>
 	ReceiveUDP(DatagramSocket socket, int MAX_BUF_SIZE)
 	{
+		e_assert(evilNetInitialized, notAlreadyInit);
 		try
 		{
 			return Receiver.receiveUDP(socket, MAX_BUF_SIZE);
@@ -186,7 +207,6 @@ public class EvilNet
 			return null;
 		}
 	}
-
 
 	//:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::://
 	/*-------------------------------------------------- Multicast ---------------------------------------------------*/
@@ -211,6 +231,7 @@ public class EvilNet
 	public static <T> void
 	SendMulticast(MulticastSocket socket, ArrayList<T> messages, InetAddress IP, int PORT)
 	{
+		e_assert(evilNetInitialized, notAlreadyInit);
 		try
 		{
 			Sender.sendMulticast(socket, messages, IP, PORT);
@@ -226,6 +247,7 @@ public class EvilNet
 	public static <T> void
 	SendMulticast(MulticastSocket socket, T message, InetAddress IP, int PORT)
 	{
+		e_assert(evilNetInitialized, notAlreadyInit);
 		try
 		{
 			Sender.sendMulticast(socket, message, IP, PORT);
@@ -235,6 +257,8 @@ public class EvilNet
 			e.printStackTrace();
 		}
 	}
+
+
 
 	/**
 	 * Receive messages sent over a multicast socket.
@@ -246,12 +270,12 @@ public class EvilNet
 	 * @param <T>           The generic type representing the message. This can be anything as long as it implements the
 	 *                      Serializable-interface.
 	 *
-	 * @return              Returns deserialized messages in an ArrayList of type 'T'. If an excetion is triggered, the
-	 *                      function returns null. You can use this fact to break your listener loop.
+	 * @return              Returns deserialized messages in an ArrayList of type 'T'.
 	 */
 	public static <T> ArrayList<T>
 	ReceiveMulti(MulticastSocket socket, int MAX_BUF_SIZE)
 	{
+		e_assert(evilNetInitialized, notAlreadyInit);
 		try
 		{
 			return Receiver.receiveMulticast(socket, MAX_BUF_SIZE);

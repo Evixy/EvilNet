@@ -8,8 +8,18 @@ import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.util.ArrayList;
 
+
+
 class Sender
 {
+
+	private static TCPQueue tcpQueue = null;
+	private static UDPQueue udpQueue = null;
+	private static MulticastQueue multiQueue = null;
+
+	//:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::://
+	/*----------------------------------------------------- UDP ------------------------------------------------------*/
+	//:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::://
 	/**
 	 * Function to send over a DatagramSocket.
 	 *
@@ -31,6 +41,13 @@ class Sender
 	sendDatagram(DatagramSocket socket, ArrayList<T> objects, InetAddress address, int port)
 			throws IOException
 	{
+		if(udpQueue == null)
+		{
+			udpQueue = new UDPQueue(EvilNet.tickRate);
+		}
+
+		UDPMessage msg = new UDPMessage<>(socket, objects, address, port);
+		udpQueue.AddToQueue(msg);
 		byte[] b = Serializer.Serialize(objects);
 		DatagramPacket dp = new DatagramPacket(b, b.length, address, port);
 		socket.send(dp);
@@ -48,6 +65,9 @@ class Sender
 		socket.send(dp);
 	}
 
+	//:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::://
+	/*-------------------------------------------------- Multicast ---------------------------------------------------*/
+	//:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::://
 	/**
 	 * Function to send over a MulticastSocket.
 	 *
@@ -84,6 +104,10 @@ class Sender
 		DatagramPacket dp = new DatagramPacket(b, b.length, group, port);
 		socket.send(dp);
 	}
+
+	//:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::://
+	/*----------------------------------------------------- TCP ------------------------------------------------------*/
+	//:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::://
 	/**
 	 * Function to send over a DataOutputStream.
 	 *
