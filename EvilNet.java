@@ -94,7 +94,8 @@ public class EvilNet
 	 * @param <T>           The generic type representing the message. This can be anything as long as it implements the
 	 *                      Serializable-interface.
 	 *
-	 * @return              Returns de-serialized messages in an ArrayList of type 'T'.
+	 * @return              Returns de-serialized messages in an ArrayList of type 'T'. If an excetion is triggered, the
+	 *                      function returns null. You can use this fact to break your listener loop.
 	 */
 	public static <T> ArrayList<T>
 	ReceiveTCP(DataInputStream inputStream, int MAX_BUF_SIZE)
@@ -169,7 +170,8 @@ public class EvilNet
 	 * @param <T>           The generic type representing the message. This can be anything as long as it implements the
 	 *                      Serializable-interface.
 	 *
-	 * @return              Returns de-serialized messages in an ArrayList of type 'T'.
+	 * @return              Returns de-serialized messages in an ArrayList of type 'T'. If an excetion is triggered, the
+	 *                      function returns null. You can use this fact to break your listener loop.
 	 */
 	public static <T> ArrayList<T>
 	ReceiveUDP(DatagramSocket socket, int MAX_BUF_SIZE)
@@ -244,7 +246,8 @@ public class EvilNet
 	 * @param <T>           The generic type representing the message. This can be anything as long as it implements the
 	 *                      Serializable-interface.
 	 *
-	 * @return              Returns deserialized messages in an ArrayList of type 'T'.
+	 * @return              Returns deserialized messages in an ArrayList of type 'T'. If an excetion is triggered, the
+	 *                      function returns null. You can use this fact to break your listener loop.
 	 */
 	public static <T> ArrayList<T>
 	ReceiveMulti(MulticastSocket socket, int MAX_BUF_SIZE)
