@@ -1,11 +1,7 @@
 package EvilNet;
 
-
-
 import java.io.IOException;
-import java.net.InetAddress;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * The Multicast Queue. Inherits from SendQueue.
