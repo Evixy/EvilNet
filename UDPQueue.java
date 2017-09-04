@@ -3,8 +3,6 @@ package EvilNet;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * The UDP Queue. Inherits from SendQueue.
@@ -13,42 +11,33 @@ import java.util.Map;
  */
 class UDPQueue extends SendQueue
 {
-	private HashMap<InetAddress, Messages.UDPMessage> messages;
-	private ArrayList<InetAddress> ipsToSendTo;
+	private ArrayList<Messages.UDPMessage> messages;
+
 	UDPQueue(int tickRate)
 	{
 		super(tickRate);
-		this.ipsToSendTo = new ArrayList<>();
-		this.messages = new HashMap<InetAddress, Messages.UDPMessage>();
+		this.messages = new ArrayList<>();
 	}
 
 	@Override
-	void AddToQueue(ArrayList<Messages.IPMessage> msg)
+	void
+	AddToQueue(ArrayList<Messages.IPMessage> msg)
 	{
 		for(int i = 0; i < msg.size(); i++)
 		{
 			Messages.UDPMessage m = (Messages.UDPMessage) msg.get(i);
-			Messages.UDPMessage ms = this.messages.get(m.IP);
-			if(ms != null)
-			{
-				ms.msg.addAll(m.msg);
-			}
-			else
-			{
-				this.messages.put(m.IP, m);
-				this.ipsToSendTo.add(m.IP);
-			}
+			this.messages.add(m);
 		}
 	}
 
 	@Override
-	void SendMessages() throws IOException
+	void
+	SendMessages() throws IOException
 	{
-		while(this.ipsToSendTo.size() > 0)
+		while(this.messages.size() > 0)
 		{
-			InetAddress ip = this.ipsToSendTo.remove(0);
-			Messages.UDPMessage msgToSend = this.messages.remove(ip);
-			EvilNet.e_assert(msgToSend != null, "Message is null for some reason even though we have an IP for it");
+			Messages.UDPMessage msgToSend = this.messages.remove(0);
+			Evil.e_assert(msgToSend != null, "Message is null for some reason even though we have an IP for it");
 			Sender.SendDatagram(msgToSend.socket, msgToSend.msg, msgToSend.IP, msgToSend.PORT);
 		}
 	}

@@ -8,7 +8,7 @@ import java.net.MulticastSocket;
 import java.util.ArrayList;
 
 /**
- * Receiver-class. This class and it's functions are Package-private because the EvilNet-class is the users way to interact
+ * Receiver-class. This class and it's functions are Package-private because the Evil-class is the users way to interact
  * with this library.
  */
 class Receiver

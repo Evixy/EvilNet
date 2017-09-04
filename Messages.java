@@ -7,7 +7,7 @@ import java.net.MulticastSocket;
 import java.util.ArrayList;
 
 /**
- * Messages class for EvilNet to represent the messages in the send queues.
+ * Messages class for Evil to represent the messages in the send queues.
  */
 class Messages
 {

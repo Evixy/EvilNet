@@ -11,42 +11,33 @@ import java.util.*;
  */
 class TCPQueue extends SendQueue
 {
-	private HashMap<DataOutputStream, Messages.TCPMessage> messages;
-	private ArrayList<DataOutputStream> streams;
+	private ArrayList<Messages.TCPMessage> messages;
+
 	TCPQueue(int tickRate)
 	{
 		super(tickRate);
-		this.messages = new HashMap<DataOutputStream, Messages.TCPMessage>();
-		this.streams = new ArrayList<>();
+		this.messages = new ArrayList<>();
 	}
 
 	@Override
-	void AddToQueue(ArrayList<Messages.IPMessage> msg)
+	void
+	AddToQueue(ArrayList<Messages.IPMessage> msg)
 	{
 		for(int i = 0; i < msg.size(); i++)
 		{
 			Messages.TCPMessage m = (Messages.TCPMessage) msg.get(i);
-			Messages.TCPMessage v = this.messages.get(m.outputStream);
-			if(v != null)
-			{
-				v.msg.addAll(m.msg);
-			}
-			else
-			{
-				this.messages.put(m.outputStream, m);
-				this.streams.add(m.outputStream);
-			}
+			this.messages.add(m);
 		}
 	}
 
 	@Override
-	void SendMessages() throws IOException
+	void
+	SendMessages() throws IOException
 	{
-		while(this.streams.size() > 0)
+		while(this.messages.size() > 0)
 		{
-			DataOutputStream stream = this.streams.remove(0);
-			Messages.TCPMessage msg = this.messages.remove(stream);
-			EvilNet.e_assert(msg != null, "Message is null even though there is a stream");
+			Messages.TCPMessage msg = this.messages.remove(0);
+			Evil.e_assert(msg != null, "Message is null even though there is a stream");
 			Sender.SendTCP(msg.outputStream, msg.msg);
 		}
 	}

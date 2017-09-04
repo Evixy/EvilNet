@@ -9,7 +9,7 @@ import java.util.ArrayList;
  *
  *  Each of the respective queues (TCP, Datagram and Multicast) all inherit from this class.
  *  When the user decides to send a message over either of the supported protocols, a queue is created with the tickRate
- *  (amount of times messages are sent every second) specified when EvilNet was initialized.
+ *  (amount of times messages are sent every second) specified when Evil was initialized.
  *
  *  Once the queue has been made, messages will be added to the queue and messages are sent based on the tick rate.
  */
@@ -27,7 +27,8 @@ abstract class SendQueue extends Thread
 		this.SetTickRate(tickRate);
 	}
 
-	private boolean IsTimeToSend()
+	private boolean
+	IsTimeToSend()
 	{
 		this.now = System.currentTimeMillis();
 		long delta = this.now - this.previous;
@@ -41,7 +42,8 @@ abstract class SendQueue extends Thread
 		return false;
 	}
 
-	private void InitQueue()
+	private void
+	InitQueue()
 	{
 		this.now = System.currentTimeMillis();
 		this.previous = this.now;
@@ -49,14 +51,16 @@ abstract class SendQueue extends Thread
 	}
 
 
-	void SetTickRate(int tickRate)
+	void
+	SetTickRate(int tickRate)
 	{
 		this.tickRate = tickRate;
-		this.timeBetweenTicks = 1000L / (long)this.tickRate;
+		this.timeBetweenTicks = 1000L / (long) this.tickRate;
 	}
 
 	@Override
-	public void run()
+	public void
+	run()
 	{
 		this.InitQueue();
 		while(true)
@@ -74,14 +78,18 @@ abstract class SendQueue extends Thread
 			}
 		}
 	}
-	void AddToQueue(Messages.IPMessage msg)
+
+	void AddToQueue
+			(Messages.IPMessage msg)
 	{
 		ArrayList<Messages.IPMessage> m = new ArrayList<>();
 		m.add(msg);
 		this.AddToQueue(m);
 	}
 
-	abstract void AddToQueue(ArrayList<Messages.IPMessage> msg);
+	abstract void
+	AddToQueue(ArrayList<Messages.IPMessage> msg);
 
-	abstract void SendMessages() throws IOException;
+	abstract void
+	SendMessages() throws IOException;
 }

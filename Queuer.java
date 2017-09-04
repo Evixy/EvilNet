@@ -9,10 +9,6 @@ import java.util.ArrayList;
 
 class Queuer
 {
-	private static TCPQueue tcpQueue = null;
-	private static UDPQueue udpQueue = null;
-	private static MulticastQueue multiQueue = null;
-
 	//:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::://
 	/*----------------------------------------------------- UDP ------------------------------------------------------*/
 	//:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::://
@@ -37,14 +33,14 @@ class Queuer
 	QueueDatagram(DatagramSocket socket, ArrayList<T> objects, InetAddress address, int port)
 			throws IOException
 	{
-		if(udpQueue == null)
+		UDPQueue queue = Evil.udpQueueMap.get(address);
+		if(queue == null)
 		{
-			udpQueue = new UDPQueue(EvilNet.tickRate);
-			udpQueue.start();
+			queue = new UDPQueue(Evil.tickRate);
+			queue.start();
+			Evil.udpQueueMap.put(address, queue);
 		}
-
-		Messages.UDPMessage msg = new Messages.UDPMessage<>(socket, objects, address, port);
-		udpQueue.AddToQueue(msg);
+		queue.AddToQueue(new Messages.UDPMessage<>(socket, objects, address, port));
 	}
 
 	/**
@@ -54,14 +50,14 @@ class Queuer
 	QueueDatagram(DatagramSocket socket, T object, InetAddress address, int port)
 			throws IOException
 	{
-		if(udpQueue == null)
+		UDPQueue queue = Evil.udpQueueMap.get(address);
+		if(queue == null)
 		{
-			udpQueue = new UDPQueue(EvilNet.tickRate);
-			udpQueue.start();
+			queue = new UDPQueue(Evil.tickRate);
+			queue.start();
+			Evil.udpQueueMap.put(address, queue);
 		}
-
-		Messages.UDPMessage msg = new Messages.UDPMessage<>(socket, object, address, port);
-		udpQueue.AddToQueue(msg);
+		queue.AddToQueue(new Messages.UDPMessage<>(socket, object, address, port));
 	}
 
 	//:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::://
@@ -88,14 +84,16 @@ class Queuer
 	QueueMulticast(MulticastSocket socket, ArrayList<T> objects, InetAddress group, int port)
 			throws IOException
 	{
-		if(multiQueue == null)
+		MulticastQueue queue = Evil.multiQueueMap.get(group);
+		if(queue == null)
 		{
-			multiQueue = new MulticastQueue(EvilNet.tickRate);
-			multiQueue.start();
+			queue = new MulticastQueue(Evil.tickRate);
+			queue.start();
+			Evil.multiQueueMap.put(group, queue);
 		}
-		Messages.MultiMessage msg = new Messages.MultiMessage<>(socket, objects, group, port);
-		multiQueue.AddToQueue(msg);
+		queue.AddToQueue(new Messages.MultiMessage<>(socket, objects, group, port));
 	}
+
 	/**
 	 * Overloaded function of the above to add one message to the queue.
 	 */
@@ -103,13 +101,14 @@ class Queuer
 	QueueMulticast(MulticastSocket socket, T object, InetAddress group, int port)
 			throws IOException
 	{
-		if(multiQueue == null)
+		MulticastQueue queue = Evil.multiQueueMap.get(group);
+		if(queue == null)
 		{
-			multiQueue = new MulticastQueue(EvilNet.tickRate);
-			multiQueue.start();
+			queue = new MulticastQueue(Evil.tickRate);
+			queue.start();
+			Evil.multiQueueMap.put(group, queue);
 		}
-		Messages.MultiMessage msg = new Messages.MultiMessage<>(socket, object, group, port);
-		multiQueue.AddToQueue(msg);
+		queue.AddToQueue(new Messages.MultiMessage<>(socket, object, group, port));
 	}
 
 	//:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::://
@@ -132,14 +131,16 @@ class Queuer
 	QueueTCP(DataOutputStream stream, ArrayList<T> objects)
 			throws IOException
 	{
-		if(tcpQueue == null)
+		TCPQueue queue = Evil.tcpQueueMap.get(stream);
+		if(queue == null)
 		{
-			tcpQueue = new TCPQueue(EvilNet.tickRate);
-			tcpQueue.start();
+			queue = new TCPQueue(Evil.tickRate);
+			queue.start();
+			Evil.tcpQueueMap.put(stream, queue);
 		}
-		Messages.TCPMessage msg = new Messages.TCPMessage<>(stream, objects);
-		tcpQueue.AddToQueue(msg);
+		queue.AddToQueue(new Messages.TCPMessage<>(stream, objects));
 	}
+
 	/**
 	 *  Overloaded function of the above to add one message to the queue.
 	 */
@@ -147,12 +148,13 @@ class Queuer
 	QueueTCP(DataOutputStream stream, T object)
 			throws IOException
 	{
-		if(tcpQueue == null)
+		TCPQueue queue = Evil.tcpQueueMap.get(stream);
+		if(queue == null)
 		{
-			tcpQueue = new TCPQueue(EvilNet.tickRate);
-			tcpQueue.start();
+			queue = new TCPQueue(Evil.tickRate);
+			queue.start();
+			Evil.tcpQueueMap.put(stream, queue);
 		}
-		Messages.TCPMessage msg = new Messages.TCPMessage<>(stream, object);
-		tcpQueue.AddToQueue(msg);
+		queue.AddToQueue(new Messages.TCPMessage<>(stream, object));
 	}
 }

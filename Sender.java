@@ -9,14 +9,15 @@ import java.net.MulticastSocket;
 import java.util.ArrayList;
 
 /**
- * Sender class for EvilNet.
+ * Sender class for Evil.
  */
 class Sender
 {
 	/**
 	 * Sends a UDP message.
 	 */
-	static <T> void SendDatagram(DatagramSocket socket, ArrayList<T> msg, InetAddress ip, int port) throws IOException
+	static <T> void
+	SendDatagram(DatagramSocket socket, ArrayList<T> msg, InetAddress ip, int port) throws IOException
 	{
 		byte[] b = Serializer.Serialize(msg);
 		socket.send(new DatagramPacket(b, b.length, ip, port));
@@ -25,7 +26,8 @@ class Sender
 	/**
 	 * Sends a Multicast message.
 	 */
-	static <T> void SendMulticast(MulticastSocket socket, ArrayList<T> msg, InetAddress group, int port) throws IOException
+	static <T> void
+	SendMulticast(MulticastSocket socket, ArrayList<T> msg, InetAddress group, int port) throws IOException
 	{
 		byte[] b = Serializer.Serialize(msg);
 		socket.send(new DatagramPacket(b, b.length, group, port));
@@ -34,7 +36,8 @@ class Sender
 	/**
 	 * Sends a TCP message.
 	 */
-	static <T> void SendTCP(DataOutputStream stream, ArrayList<T> msg) throws IOException
+	static <T> void
+	SendTCP(DataOutputStream stream, ArrayList<T> msg) throws IOException
 	{
 		byte[] b = Serializer.Serialize(msg);
 		stream.write(b);
