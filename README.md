@@ -9,7 +9,8 @@ receiving them as a byte-array on the other end and then deserialize them into o
 The engine makes use of generic types so a user can send any type of object into the engine as long as the 
 object implements the Serializable-interface. 
 
-EvilNet can make use of all network traffic protocols, including multicast sockets. 
+EvilNet can make use of all network traffic protocols, including multicast sockets. Messages are sent based on
+a tick rate that is defined when EvilNet is initialized. 
 
 Download this engine as a zip and put it into your project. Depending on where you put the files you may have 
 to chanage the package-names for EvilNet. After that, check the file EvilNet.java to get an idea of how to 

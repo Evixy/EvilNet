@@ -38,6 +38,10 @@ class Serializer
 		bos.close();
 		return byteArray;
 	}
+
+	/**
+	 * Overloaded function of the above to serialize a single message.
+	 */
 	static <T> byte[]
 	Serialize(T m)
 			throws IOException

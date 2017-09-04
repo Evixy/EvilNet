@@ -45,13 +45,31 @@ public class EvilNet
 	private static boolean evilNetInitialized = false;
 	private static String alreadyInit = "EvilNet has already been initialized.";
 	private static String notAlreadyInit = "EvilNet has not been initialized yet. Call InitializeEvilNet before you try to use the functions.";
+
+	/**
+	 * Static function to initialize EvilNet.
+	 *
+	 * In order to initialize EvilNet, a tick rate needs to be specified. Tick rate means the amount of times per second
+	 * messages are sent over the network. A high tick rate can easily clog up the network while a low tick rate can
+	 * make an application appear laggy.
+	 *
+	 * @param tick          The amount of times per second messages are sent over the network.
+	 *                      Preferably keep this below 60.
+	 */
 	public static void InitializeEvilNet(int tick)
 	{
-		e_assert(!evilNetInitialized, "EvilNet has already been initialized.");
+		e_assert(!evilNetInitialized, alreadyInit);
 		evilNetInitialized = true;
 		tickRate = tick;
 	}
 
+	/**
+	 * Assertion function for EvilNet to throw an assertion error with a string message if the statement is false.
+	 *
+	 * @param val           Boolean statement to check.
+	 *
+	 * @param str           The message to be posted if the statement is false.
+	 */
 	static void e_assert(boolean val, String str)
 	{
 		if(!val)
@@ -80,13 +98,14 @@ public class EvilNet
 		e_assert(evilNetInitialized, notAlreadyInit);
 		try
 		{
-			Sender.sendTCP(outputStream, messages);
+			Queuer.QueueTCP(outputStream, messages);
 		}
 		catch (IOException e)
 		{
 			e.printStackTrace();
 		}
 	}
+
 	/**
 	 * Overloaded function of the above to allow a user to send a single message without creating a container for it.
 	 */
@@ -96,7 +115,7 @@ public class EvilNet
 		e_assert(evilNetInitialized, notAlreadyInit);
 		try
 		{
-			Sender.sendTCP(outputStream, message);
+			Queuer.QueueTCP(outputStream, message);
 		}
 		catch (IOException e)
 		{
@@ -157,13 +176,14 @@ public class EvilNet
 		e_assert(evilNetInitialized, notAlreadyInit);
 		try
 		{
-			Sender.sendDatagram(socket, messages, IP, PORT);
+			Queuer.QueueDatagram(socket, messages, IP, PORT);
 		}
 		catch (IOException e)
 		{
 			e.printStackTrace();
 		}
 	}
+
 	/**
 	 * Overloaded function of the above to allow a user to send a single message without creating a container for it.
 	 */
@@ -173,7 +193,7 @@ public class EvilNet
 		e_assert(evilNetInitialized, notAlreadyInit);
 		try
 		{
-			Sender.sendDatagram(socket, message, IP, PORT);
+			Queuer.QueueDatagram(socket, message, IP, PORT);
 		}
 		catch (IOException e)
 		{
@@ -234,13 +254,14 @@ public class EvilNet
 		e_assert(evilNetInitialized, notAlreadyInit);
 		try
 		{
-			Sender.sendMulticast(socket, messages, IP, PORT);
+			Queuer.QueueMulticast(socket, messages, IP, PORT);
 		}
 		catch (IOException e)
 		{
 			e.printStackTrace();
 		}
 	}
+
 	/**
 	 * Overloaded function of the above to allow a user to send a single message without creating a container for it.
 	 */
@@ -250,15 +271,13 @@ public class EvilNet
 		e_assert(evilNetInitialized, notAlreadyInit);
 		try
 		{
-			Sender.sendMulticast(socket, message, IP, PORT);
+			Queuer.QueueMulticast(socket, message, IP, PORT);
 		}
 		catch (IOException e)
 		{
 			e.printStackTrace();
 		}
 	}
-
-
 
 	/**
 	 * Receive messages sent over a multicast socket.

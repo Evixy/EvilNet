@@ -1,10 +1,19 @@
-package EvilNet.Queues;
+package EvilNet;
 
 
 import java.io.IOException;
 import java.util.ArrayList;
 
-public abstract class SendQueue implements Runnable
+/**
+ *  This is the abstract class SendQueue.
+ *
+ *  Each of the respective queues (TCP, Datagram and Multicast) all inherit from this class.
+ *  When the user decides to send a message over either of the supported protocols, a queue is created with the tickRate
+ *  (amount of times messages are sent every second) specified when EvilNet was initialized.
+ *
+ *  Once the queue has been made, messages will be added to the queue and messages are sent based on the tick rate.
+ */
+abstract class SendQueue extends Thread
 {
 	private int tickRate;
 	private long timeBetweenTicks;
@@ -13,12 +22,12 @@ public abstract class SendQueue implements Runnable
 	private long now;
 	private long spent;
 
-	public SendQueue(int tickRate)
+	SendQueue(int tickRate)
 	{
 		this.SetTickRate(tickRate);
 	}
 
-	public boolean IsTimeToSend()
+	private boolean IsTimeToSend()
 	{
 		this.now = System.currentTimeMillis();
 		long delta = this.now - this.previous;
@@ -32,15 +41,15 @@ public abstract class SendQueue implements Runnable
 		return false;
 	}
 
-	public void InitQueue()
+	private void InitQueue()
 	{
 		this.now = System.currentTimeMillis();
-		this.previous = now;
+		this.previous = this.now;
 		this.spent = 0;
 	}
 
 
-	public void SetTickRate(int tickRate)
+	void SetTickRate(int tickRate)
 	{
 		this.tickRate = tickRate;
 		this.timeBetweenTicks = 1000L / (long)this.tickRate;
@@ -65,14 +74,14 @@ public abstract class SendQueue implements Runnable
 			}
 		}
 	}
-	public void AddToQueue(Messages.IPMessage msg)
+	void AddToQueue(Messages.IPMessage msg)
 	{
 		ArrayList<Messages.IPMessage> m = new ArrayList<>();
 		m.add(msg);
 		this.AddToQueue(m);
 	}
 
-	public abstract void AddToQueue(ArrayList<Messages.IPMessage> msg);
+	abstract void AddToQueue(ArrayList<Messages.IPMessage> msg);
 
-	public abstract void SendMessages() throws IOException;
+	abstract void SendMessages() throws IOException;
 }
