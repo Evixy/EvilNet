@@ -9,4 +9,8 @@ This is a list of things to do with EvilNet.
 	with either a DataOutputStream or an IP-adress/Multicast-group as key and the SendQueue 
 	as a value. 
 	
-2.	Something that I'll come to think about later :)
+	This has sort of been fixed now and seems to work pretty well. 
+	
+2.	Add some form of security to the engine. Maybe some form of encryption algorithm to encrypt and decrypt data. 
+	
+3.	Something that I'll come to think about later :)

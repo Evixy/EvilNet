@@ -2,6 +2,7 @@ package EvilNet;
 
 
 import java.io.IOException;
+import java.net.SocketException;
 import java.util.ArrayList;
 
 /**
@@ -16,17 +17,19 @@ import java.util.ArrayList;
 abstract class SendQueue extends Thread
 {
 	private int tickRate;
-	private long timeBetweenTicks;
 
+	private long timeBetweenTicks;
 	private long previous;
 	private long now;
 	private long spent;
 
+	/** Ctor */
 	SendQueue(int tickRate)
 	{
 		this.SetTickRate(tickRate);
 	}
 
+	/** Checking if it's time to send */
 	private boolean
 	IsTimeToSend()
 	{
@@ -42,6 +45,7 @@ abstract class SendQueue extends Thread
 		return false;
 	}
 
+	/** Initializing the queue */
 	private void
 	InitQueue()
 	{
@@ -50,7 +54,7 @@ abstract class SendQueue extends Thread
 		this.spent = 0;
 	}
 
-
+	/** Set the tick rate and update it. Probably not a good idea */
 	void
 	SetTickRate(int tickRate)
 	{
@@ -58,6 +62,7 @@ abstract class SendQueue extends Thread
 		this.timeBetweenTicks = 1000L / (long) this.tickRate;
 	}
 
+	/** run function */
 	@Override
 	public void
 	run()
@@ -71,14 +76,21 @@ abstract class SendQueue extends Thread
 				{
 					this.SendMessages();
 				}
+				catch (SocketException e)
+				{
+					System.out.println("EvilNet: Socket closed");
+					return;
+				}
 				catch (IOException e)
 				{
 					e.printStackTrace();
+					return;
 				}
 			}
 		}
 	}
 
+	/** Function to add msg to queue */
 	void AddToQueue
 			(Messages.IPMessage msg)
 	{
@@ -87,9 +99,11 @@ abstract class SendQueue extends Thread
 		this.AddToQueue(m);
 	}
 
+	/** Abstract function to add an array of messages to the queue */
 	abstract void
 	AddToQueue(ArrayList<Messages.IPMessage> msg);
 
+	/** Abstract function to send messages in the queue */
 	abstract void
 	SendMessages() throws IOException;
 }

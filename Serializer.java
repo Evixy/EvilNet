@@ -25,14 +25,14 @@ class Serializer
 			throws IOException
 	{
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		ObjectOutputStream output = new ObjectOutputStream(bos);
+		ObjectWriter writer = new ObjectWriter(bos);
 
-		for(int i = 0; i < m.size();i++)
+		for(int i = 0; i < m.size(); i++)
 		{
-			output.writeObject(m.get(i));
-			output.flush();
+			writer.writeObject(m.get(i));
+			writer.flush();
 		}
-		output.close();
+		writer.close();
 
 		byte[] byteArray = bos.toByteArray();
 		bos.close();
@@ -47,11 +47,11 @@ class Serializer
 			throws IOException
 	{
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		ObjectOutputStream output = new ObjectOutputStream(bos);
+		ObjectWriter writer = new ObjectWriter(bos);
 
-		output.writeObject(m);
-		output.flush();
-		output.close();
+		writer.writeObject(m);
+		writer.flush();
+		writer.close();
 
 		byte[] byteArray = bos.toByteArray();
 		bos.close();
@@ -73,17 +73,17 @@ class Serializer
 	Deserialize(byte[] b)
 			throws IOException
 	{
-		ArrayList<T> objects = new ArrayList<>();
-		ObjectInputStream iStream;
 		try
 		{
-			iStream = new ObjectInputStream(new ByteArrayInputStream(b));
+			ArrayList<T> objects = new ArrayList<>();
+			ByteArrayInputStream bais = new ByteArrayInputStream(b);
+			ObjectReader reader = new ObjectReader(bais);
 			Object obj;
 			while(true)
 			{
 				try
 				{
-					obj = iStream.readObject();
+					obj = reader.readObject();
 					if(obj != null)
 					{
 						objects.add((T) obj);
@@ -95,12 +95,20 @@ class Serializer
 				}
 				catch (EOFException e)
 				{
-					iStream.close();
+					reader.close();
+					bais.close();
+					return objects;
+				}
+				catch (StreamCorruptedException s)
+				{
+					s.printStackTrace();
+					reader.close();
+					bais.close();
 					return objects;
 				}
 			}
 
-			iStream.close();
+			reader.close();
 		}
 		catch (ClassNotFoundException e)
 		{

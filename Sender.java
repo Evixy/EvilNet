@@ -9,7 +9,7 @@ import java.net.MulticastSocket;
 import java.util.ArrayList;
 
 /**
- * Sender class for Evil.
+ * GameSender class for Evil.
  */
 class Sender
 {

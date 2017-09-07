@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.MulticastSocket;
+import java.net.SocketException;
 import java.util.ArrayList;
 
 /**
@@ -16,7 +17,7 @@ class Receiver
 	/**
 	 * Function to receive data sent over UDP.
 	 *
-	 * @param socket        The datagram-socket to receive data on.
+	 * @param socket        The datagram-datagramSocket to receive data on.
 	 *
 	 * @param MAX_BUF_SIZE  The maximum size of the buffer for data.
 	 *
@@ -41,7 +42,7 @@ class Receiver
 	/**
 	 * Function to receive data sent over UDP.
 	 *
-	 * @param socket        The multicast-socket to receive data on.
+	 * @param socket        The multicast-datagramSocket to receive data on.
 	 *
 	 * @param MAX_BUF_SIZE  The maximum size of the buffer for data.
 	 *
@@ -83,6 +84,10 @@ class Receiver
 	{
 		byte[] data = new byte[MAX_BUF_SIZE];
 		int len = stream.read(data);
+		if(len == -1)
+		{
+			throw new SocketException();
+		}
 		byte[] b = Truncate(data, len);
 
 		return Serializer.Deserialize(b);

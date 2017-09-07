@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -42,7 +43,7 @@ import java.util.HashMap;
 
 public class Evil
 {
-	public static int tickRate;
+	static int tickRate;
 	private static boolean evilNetInitialized = false;
 	private static String alreadyInit = "EvilNet has already been initialized.";
 	private static String notAlreadyInit = "EvilNet has not been initialized yet. Call InitializeEvilNet before you try to use the functions.";
@@ -74,7 +75,7 @@ public class Evil
 	}
 
 	/**
-	 * Function to update the tick rate of the engine. You should probably not do this but it is supported if you so desire
+	 * Function to update the tick rate of the engine. You should probably not do this but it is supported if you so desire.
 	 *
 	 * @param tick          The new tick rate to be set to EvilNet.
 	 */
@@ -178,6 +179,11 @@ public class Evil
 		{
 			return Receiver.receiveTCP(inputStream, MAX_BUF_SIZE);
 		}
+		catch(SocketException e)
+		{
+			System.out.println("EvilNet: Socket closed");
+			return null;
+		}
 		catch (IOException e)
 		{
 			e.printStackTrace();
@@ -267,9 +273,9 @@ public class Evil
 	/*-------------------------------------------------- Multicast ---------------------------------------------------*/
 	//:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::://
 	/**
-	 * Function to send data over a multicast socket.
+	 * Function to send data over a multicast datagramSocket.
 	 *
-	 * @param socket        The multicast socket to send data over.
+	 * @param socket        The multicast datagramSocket to send data over.
 	 *
 	 * @param messages      This is a container for the messages to be serialized and sent over the DatagramSocket.
 	 *                      It uses a generic type to allow a user to send any type of message they want, the message
@@ -315,7 +321,7 @@ public class Evil
 	}
 
 	/**
-	 * Receive messages sent over a multicast socket.
+	 * Receive messages sent over a multicast datagramSocket.
 	 *
 	 * @param socket        This is the MulticastSocket that is used to receive the data.
 	 *
@@ -340,5 +346,4 @@ public class Evil
 			return null;
 		}
 	}
-
 }

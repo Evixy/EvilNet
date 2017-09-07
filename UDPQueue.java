@@ -35,9 +35,9 @@ class UDPQueue extends SendQueue
 	{
 		while(this.messages.size() > 0)
 		{
-			Messages.UDPMessage msgToSend = this.messages.remove(0);
-			Evil.e_assert(msgToSend != null, "Message is null for some reason even though we have an IP for it");
-			Sender.SendDatagram(msgToSend.socket, msgToSend.msg, msgToSend.IP, msgToSend.PORT);
+			Messages.UDPMessage msg = this.messages.remove(0);
+			Evil.e_assert(msg != null, "Message is null for some reason even though we have an IP for it");
+			Sender.SendDatagram(msg.socket, msg.msg, msg.IP, msg.PORT);
 		}
 	}
 }
